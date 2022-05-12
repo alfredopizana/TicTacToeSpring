@@ -1,16 +1,16 @@
 swagger: "2.0"
 info:
-  description: "This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters."
+  description: "This is a sample Tictactoe server."
   version: "1.0.0"
   title: "Swagger Petstore"
   termsOfService: "http://swagger.io/terms/"
   contact:
-    email: "apiteam@swagger.io"
+    email: "pizana.alfredo@gmail.com"
   license:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-host: "petstore.swagger.io"
-basePath: "/v2"
+host: "tictactore.swagger.io"
+basePath: "/v1"
 tags:
 - name: "authentication"
   description: "authentication endpoint"
@@ -29,4 +29,216 @@ paths:
     post:
       tags: 
       - "users"
-    
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "User"
+        in: "body"
+        description: "User object"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        "200":
+          description: "User created"
+          schema:
+            $ref: "#/definitions/User"
+        "400":
+          description: "Bad Request"
+    get:
+      tags:
+      - "users"
+      responses:
+        "200":
+          description: "Users found"
+  /users/{id}:
+    get:
+      tags:
+      - "users"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+      responses:
+        "200":
+          description: "User created"
+  /games:
+    post:
+      tags:
+      - "games"
+      description: "Create a new game"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Game Created"
+          schema:
+            $ref: "#/definitions/Game"
+        "400":
+          description: "Bad Request"
+      parameters:
+      - in: "query"
+        name: "filter"
+        type: "integer"
+        
+    patch:
+      tags:
+      - "games"
+      description: "Update de game"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Game Updated"
+          schema:
+            $ref: "#/definitions/Game"
+        "400":
+          description: "Bad Request"
+  /games/findByUserId/{userId}:
+    get:
+      tags:
+      - "games"
+      description: "Find games by userId"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Game Created"
+          schema:
+            $ref: "#/definitions/Game"
+        "400":
+          description: "Bad Request"
+      parameters:
+      - name: "userId"
+        in: "path"
+        required: true
+        type: "integer"
+  /games/{id}:
+    get:
+      tags:
+      - "games"
+      description: "get the game by id"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+      responses:
+        "200":
+          description: "Game Found"
+          schema:
+            $ref: "#/definitions/Game"
+        "400":
+          description: "Bad Request"
+  /movements:
+    post:
+      tags:
+      - "movements"
+      description: "Add a new movement"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Game Created"
+          schema:
+            $ref: "#/definitions/Game"
+        "400":
+          description: "Bad Request"
+definitions:
+  User:
+    type: "object"
+    required:
+    - "email"
+    properties:
+      id:
+        type: "integer"
+      email: 
+        type: "string"
+        example: "example@company.com"
+        description: "email of the user"
+      password: 
+        type: "string"
+        description: "password of the user"
+      username: 
+        type: "string"
+        description: "username"
+  Game:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      gameMode:
+        type: "string"
+        description: "Type of game selected"
+        enum:
+        - "random"
+        - "ai"
+        - "versus"
+      status: 
+        type: "string"
+        description: "current status of the game"
+        enum:
+        - "notstarted"
+        - "inprogress"
+        - "completed"
+      winner:
+        enum:
+        - "user"
+        - "opponent"
+        - "notcompleted"
+      nextMovement:
+        enum:
+          - "user"
+          - "opponent"
+      history:
+        type: "array"
+        items: 
+          $ref: "#/definitions/Movement"
+  Movement:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      playedBy:
+        type: "string"
+        description: "Type of game selected"
+      position:
+        type: "integer"
+      
+  ApiResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      type:
+        type: "string"
+      message:
+        type: "string"      
+        # Schema for error response body
+  Error:
+    type: "object"
+    properties:
+      code:
+        type: "string"
+      message:
+        type: "string"
+    required:
+      - "code"
+      - "message"
+        
