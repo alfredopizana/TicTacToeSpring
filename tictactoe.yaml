@@ -41,7 +41,7 @@ paths:
         schema:
           $ref: "#/definitions/User"
       responses:
-        "200":
+        "201":
           description: "User created"
           schema:
             $ref: "#/definitions/User"
@@ -64,7 +64,41 @@ paths:
         type: "integer"
       responses:
         "200":
-          description: "User created"
+          description: "User found"
+    patch:
+      tags:
+      - "users"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+      - name: "User"
+        in: "body"
+        description: "User object"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        "200":
+          description: "User updated"
+          schema:
+            $ref: "#/definitions/User"
+    delete:
+      tags:
+      - "users"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+      responses:
+        "405":
+          description: "Not Allowed"
   /games:
     post:
       tags:
@@ -82,10 +116,11 @@ paths:
         "400":
           description: "Bad Request"
       parameters:
-      - in: "query"
-        name: "filter"
-        type: "integer"
-        
+      - name: "game"
+        in: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/Game"
     patch:
       tags:
       - "games"
@@ -101,6 +136,7 @@ paths:
             $ref: "#/definitions/Game"
         "400":
           description: "Bad Request"
+    
   /games/findByUserId/{userId}:
     get:
       tags:
@@ -143,6 +179,26 @@ paths:
             $ref: "#/definitions/Game"
         "400":
           description: "Bad Request"
+    delete:
+      tags:
+      - "games"
+      description: "Deativate the game"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+      responses:
+        "200":
+          description: "Game Found"
+          schema:
+            $ref: "#/definitions/Game"
+        "400":
+          description: "Bad Request"
   /movements:
     post:
       tags:
@@ -159,6 +215,49 @@ paths:
             $ref: "#/definitions/Game"
         "400":
           description: "Bad Request"
+    get:
+      tags:
+      - "movements"
+      description: "get all movements"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        "405":
+          description: "Not Allowed"
+  /movements/{id}:
+    get:
+      tags:
+      - "movements"
+      description: "get a movement by Id"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+      responses:
+        "200":
+          description: "Movement Found"
+          schema:
+            $ref: "#/definitions/Movement"
+        "405":
+          description: "Not Allowed"
+    delete:
+      tags:
+      - "movements"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+      responses:
+        "405":
+          description: "Not Allowed"
 definitions:
   User:
     type: "object"
@@ -177,11 +276,22 @@ definitions:
       username: 
         type: "string"
         description: "username"
+      active:
+        type: "boolean"
+        default: true
+      created:
+        type: "string"
+        format: "date-time"
+      modified:
+        type: "string"
+        format: "date-time"
   Game:
     type: "object"
     properties:
       id:
         type: "integer"
+      name:
+        type: "string"
       gameMode:
         type: "string"
         description: "Type of game selected"
@@ -189,6 +299,7 @@ definitions:
         - "random"
         - "ai"
         - "versus"
+        default: "random"
       status: 
         type: "string"
         description: "current status of the game"
@@ -196,11 +307,14 @@ definitions:
         - "notstarted"
         - "inprogress"
         - "completed"
+        default: "notstarted"
       winner:
         enum:
         - "user"
         - "opponent"
         - "notcompleted"
+        - "tie"
+        default: "notcompleted"
       nextMovement:
         enum:
           - "user"
@@ -209,17 +323,33 @@ definitions:
         type: "array"
         items: 
           $ref: "#/definitions/Movement"
+      createdBy:
+        type: "integer"
+        
+      active:
+        type: "boolean"
+        default: true
+      created:
+        type: "string"
+        format: "date-time"
+      modified:
+        type: "string"
+        format: "date-time"
   Movement:
     type: "object"
     properties:
       id:
         type: "integer"
+      gameId:
+        type: "integer"
       playedBy:
         type: "string"
-        description: "Type of game selected"
+        description: "Current movement played by"
       position:
         type: "integer"
-      
+      created:
+        type: "string"
+        format: "date-time"
   ApiResponse:
     type: "object"
     properties:
