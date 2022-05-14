@@ -12,7 +12,7 @@ public class User {
     @Id
     @GeneratedValue
     @Column(unique = true, nullable = false)
-    private Integer Id;
+    private Integer id;
     private String email;
     private String password;
     private String username;
@@ -26,7 +26,7 @@ public class User {
 
     //setters and getters
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public void setEmail(String email) {
@@ -34,7 +34,7 @@ public class User {
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public void setPassword(String password) {
@@ -42,7 +42,7 @@ public class User {
     }
 
     public String getUsername() {
-        return username;
+        return this.username;
     }
 
     public void setUsername(String username) {
@@ -50,7 +50,7 @@ public class User {
     }
 
     public Boolean getActive() {
-        return active;
+        return this.active;
     }
 
     public void setActive(Boolean active) {

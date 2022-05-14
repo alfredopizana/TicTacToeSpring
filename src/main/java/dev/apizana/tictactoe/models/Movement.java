@@ -1,25 +1,78 @@
 package dev.apizana.tictactoe.models;
 
-import javax.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
-@Entity
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import java.time.Instant;
+
+@Entity(name="movement")
 public class Movement {
-    @javax.persistence.Id
+    
+    @Id
     @GeneratedValue
     @Column(unique = true, nullable = false)
-    private Integer Id;
-    @ManyToOne
-    @JoinColumn(name = "gameId", foreignKey = @ForeignKey(name = "id"), referencedColumnName = "id")
+    private Integer id;
+
+    @ManyToOne(targetEntity = Game.class)
+    @JoinColumn(name = "gameId", foreignKey = @ForeignKey(name = "id"))
     private Integer gameId;
-    private String playedBy;
+
+    @Enumerated(EnumType.STRING)
+    private MovementSymbol symbol;
+    
+    @NotNull
+    @Size(min = 1, max = 9)
     private Integer position;
 
+    @NotNull
+    @Size(min = 1, max = 9)
+    private Integer movementNumber;
+
+    @CreatedDate
+    private Instant createdDate;
+
+    @LastModifiedDate
+    private Instant modifiedDate;
+
     //setters and getters
+
+    public Integer getId() {
+        return this.id;
+    }
+
     public Integer getGameId() {
-        return gameId;
+        return this.gameId;
     }
 
     public void setGameId(Integer gameId) {
         this.gameId = gameId;
     }
+
+    public MovementSymbol getSymbol() {
+        return this.symbol;
+    }
+
+    public void setSymbol(MovementSymbol symbol) {
+        this.symbol = symbol;
+    }
+
+    public Integer getPosition() {
+        return this.position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
+    }
+
+    public Integer getMovementNumber() {
+        return this.movementNumber;
+    }
+
+    public void setMovementNumber(Integer movementNumber) {
+        this.movementNumber = movementNumber;
+    }
+
+
 }
