@@ -1,64 +1,45 @@
 package dev.apizana.tictactoe.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.Instant;
-
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@Getter
+@Setter
 @Entity(name = "user")
+@Data
+@Builder
 public class User {
 
     @Id
-    @GeneratedValue
+    @NotNull
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(unique = true, nullable = false)
-    private Integer id;
+    private Long id;
+    @Email
     private String email;
     private String password;
     private String username;
-    private Boolean active;
 
+    private Boolean active = true;
+
+    //@JsonIgnore
     @CreatedDate
-    private Instant createdDate;
+    private Instant createdDate = Instant.now();
 
+    //@JsonIgnore
     @LastModifiedDate
-    private Instant modifiedDate;
+    private Instant modifiedDate = Instant.now();
 
-    //setters and getters
-    public String getEmail() {
-        return this.email;
-    }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return this.password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getUsername() {
-        return this.username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public Boolean getActive() {
-        return this.active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
-    //constructor
-    public User(){
-
-    }
 }

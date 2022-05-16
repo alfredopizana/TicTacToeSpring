@@ -9,7 +9,7 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-
+/*
 @Entity(name="game")
 @Table(name="game")
 public class Game {
@@ -17,19 +17,23 @@ public class Game {
     @Id
     @GeneratedValue
     @Column(unique = true, nullable = false)
-    private Integer id;
+    private Long id;
 
     @OneToMany(mappedBy = "gameId", cascade = CascadeType.ALL)
     private List<Movement> history;
 
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "ENUM('random', 'ai', 'versus')")
     private GameMode gameMode = GameMode.random;
-
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "ENUM('notstarted', 'inprogress', 'completed')")
     private GameStatus gameStatus = GameStatus.notstarted;
 
+    @Column
     private String winner;
 
     @ManyToOne(targetEntity = User.class)
-    private Integer creatorId;
+    private Long creator;
 
     @CreatedBy
     private Long createdBy;
@@ -42,7 +46,7 @@ public class Game {
 
     //setters and getters
 
-    public Integer getId() {
+    public Long getId() {
         return this.id;
     }
     public List<Movement> getAllMovements(){
@@ -78,3 +82,4 @@ public class Game {
         this.winner = winner;
     }
 }
+*/

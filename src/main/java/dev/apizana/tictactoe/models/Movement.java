@@ -6,28 +6,31 @@ import org.springframework.data.annotation.LastModifiedDate;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.time.Instant;
-
+/*
 @Entity(name="movement")
 public class Movement {
     
     @Id
     @GeneratedValue
     @Column(unique = true, nullable = false)
-    private Integer id;
+    private Long id;
 
     @ManyToOne(targetEntity = Game.class)
     @JoinColumn(name = "gameId", foreignKey = @ForeignKey(name = "id"))
-    private Integer gameId;
+    private Long gameId;
 
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "ENUM('cross', 'circle')")
     private MovementSymbol symbol;
     
     @NotNull
     @Size(min = 1, max = 9)
+    @Column
     private Integer position;
 
     @NotNull
     @Size(min = 1, max = 9)
+    @Column
     private Integer movementNumber;
 
     @CreatedDate
@@ -38,15 +41,15 @@ public class Movement {
 
     //setters and getters
 
-    public Integer getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public Integer getGameId() {
+    public Long getGameId() {
         return this.gameId;
     }
 
-    public void setGameId(Integer gameId) {
+    public void setGameId(Long gameId) {
         this.gameId = gameId;
     }
 
@@ -75,4 +78,4 @@ public class Movement {
     }
 
 
-}
+}*/
