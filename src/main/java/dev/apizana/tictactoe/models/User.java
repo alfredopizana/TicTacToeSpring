@@ -2,6 +2,7 @@ package dev.apizana.tictactoe.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -29,14 +30,12 @@ public class User implements Serializable {
     @GeneratedValue
     @Column(unique = true, nullable = false)
     private Long id;
-    @Email(message = "invalid email address")
-    @Column(unique = true, nullable = false)
+
+    @Email
     private String email;
 
     private String password;
 
-    @Column(unique = true, nullable = false)
-    @NotNull(message = "username should not be null")
     private String username;
 
     private Boolean active = true;
