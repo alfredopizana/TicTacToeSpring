@@ -16,8 +16,8 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI springShopOpenAPI() {
         return new OpenAPI()
-                .info(new Info().title("SpringShop API")
-                .description("Spring shop sample application")
+                .info(new Info().title("TicTacToe API")
+                .description("Spring tictactoe sample application")
                 .version("v0.0.1")
                 .license(new License().name("Apache 2.0").url("http://springdoc.org")))
                 .externalDocs(new ExternalDocumentation()

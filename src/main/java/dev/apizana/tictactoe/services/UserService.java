@@ -1,46 +1,56 @@
 package dev.apizana.tictactoe.services;
 
 import dev.apizana.tictactoe.models.User;
-import dev.apizana.tictactoe.repositories.IUserRepository;
+import dev.apizana.tictactoe.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
+import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
     @Autowired
-    IUserRepository userRepository;
+    UserRepository userRepository;
+    @Autowired
+    private EntityManager entityManager;
 
-    public ResponseEntity<List<User>> getAllUsers(){
+    public User create(User user) {
 
-        try {
-            List<User> users = new ArrayList<User>();
-              userRepository.findAll().forEach(users::add);
-            if (users.isEmpty()) {
-              return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<>(users, HttpStatus.OK);
-
-          } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-          }
-    }
-    public User getById(Long id){
-        return userRepository.getById(id);
-    }
-    public User create(User user){
         return userRepository.save(user);
     }
 
-    public User update(User user){
-        
+    public List<User> getAllUsers() {
+        return userRepository.findAllByActiveTrue();
+    }
+
+    public User getById(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isEmpty())
+            return null;
+        return user.get();
+    }
+
+    public User update(User user) {
+        Optional<User> userFound = userRepository.findById(user.getId());
+        if (userFound.isEmpty())
+            return null;
+        User updatedUser = new User();
+
         return userRepository.save(user);
-        //userRepository
+    }
+
+    public Boolean deleteById(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isEmpty())
+            return false;
+
+        user.get().setActive(false);
+        user.get().setModifiedDate(Instant.now());
+        userRepository.save(user.get());
+        return true;
     }
 }
