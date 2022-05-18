@@ -3,6 +3,9 @@ package dev.apizana.tictactoe.services;
 import dev.apizana.tictactoe.models.User;
 import dev.apizana.tictactoe.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -66,4 +69,5 @@ public class UserService {
         userRepository.save(user.get());
         return true;
     }
+
 }
