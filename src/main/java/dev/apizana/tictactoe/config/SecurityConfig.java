@@ -4,6 +4,7 @@ import dev.apizana.tictactoe.repositories.UserRepository;
 import dev.apizana.tictactoe.security.AuthEntryPoint;
 import dev.apizana.tictactoe.security.RequestFilter;
 import dev.apizana.tictactoe.services.AuthService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
@@ -30,11 +32,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private AuthEntryPoint authEntryPoint;
 
     @Autowired
-
     private AuthService authService;
 
     @Autowired
     private RequestFilter requestFilter;
+
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -73,6 +75,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
 
+
+
         // Enable CORS and disable CSRF
         httpSecurity = httpSecurity.cors().and().csrf().disable();
         httpSecurity
@@ -80,8 +84,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // dont authenticate this particular request
                 .authorizeRequests()
                 .antMatchers(
-                        "/authenticate",
-                        "/register").permitAll()
+                        "/auth/authenticate",
+                        "/auth/register").permitAll()
                 // all other requests need to be authenticated
                 .anyRequest().authenticated().and().httpBasic().and()
                 // make sure we use stateless session; session won't be used to

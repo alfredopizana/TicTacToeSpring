@@ -13,29 +13,21 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import javax.validation.*;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService{
     @Autowired
     UserRepository userRepository;
     @Autowired
     private EntityManager entityManager;
 
-    /*
-    @Autowired
-    private Validator validator;
-*/
-    //@Validated(OnCreate.class)
+
     public User create(User user) {
-        /*ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
-        Set<ConstraintViolation<User>> violations = validator.validate(user);
-        if (!violations.isEmpty()) {
-            throw new ConstraintViolationException(violations);
-        }*/
+
         return userRepository.save(user);
     }
 
@@ -70,4 +62,12 @@ public class UserService {
         return true;
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
+        if(user == null)
+            throw new UsernameNotFoundException("User not found with username: " + username);
+            return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+                    new ArrayList<>());
+    }
 }
