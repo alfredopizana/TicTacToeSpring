@@ -80,7 +80,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // dont authenticate this particular request
                 .authorizeRequests()
                 .antMatchers(
-
                         "/authenticate",
                         "/register").permitAll()
                 // all other requests need to be authenticated
