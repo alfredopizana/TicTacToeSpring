@@ -26,7 +26,7 @@ import javax.xml.bind.DatatypeConverter;
 public class TokenUtil implements Serializable{
 
     @Value("${jwt.expiration}")
-    public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
+    public final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
 
     @Value("${jwt.secret}")
     private String secret;

@@ -6,12 +6,13 @@ import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository
         extends JpaRepository<User, Long> {
     List<User> findAllByActiveTrue();
-    User findByEmailOrUsername(String email, String username);
+    Optional<User> findByEmailOrUsername(String email, String username);
 
     User findByUsername(String username);
 }

@@ -1,23 +1,27 @@
 package dev.apizana.tictactoe.domain.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
+import javax.persistence.Column;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class UserDto {
-    private String username;
+
+    @Email(message = "Invalid email")
+    @NotNull(message = "Email is required")
+    private String email;
+
+    @NotNull(message = "password is required")
     private String password;
 
-    public String getUsername() {
-        return username;
-    }
+    @NotNull(message = "username is required")
+    private String username;
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }

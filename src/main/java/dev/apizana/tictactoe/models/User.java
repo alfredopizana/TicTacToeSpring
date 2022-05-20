@@ -18,8 +18,6 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Getter
-@Setter
 @Entity(name = "user")
 @Data
 @Builder
@@ -31,13 +29,19 @@ public class User implements Serializable {
     @Column(unique = true, nullable = false)
     private Long id;
 
-    @Email
+    @Email(message = "Invalid email")
+    @NotNull(message = "Email is required")
+    @Column(unique = true)
     private String email;
 
+    @NotNull(message = "password is required")
     private String password;
 
+    @NotNull(message = "username is required")
+    @Column(unique = true)
     private String username;
 
+    @JsonIgnore
     private Boolean active = true;
 
     @CreatedDate

@@ -3,10 +3,10 @@ package dev.apizana.tictactoe.controllers;
 import dev.apizana.tictactoe.domain.dtos.AuthRequest;
 import dev.apizana.tictactoe.domain.dtos.AuthResponse;
 import dev.apizana.tictactoe.domain.dtos.UserDto;
-import dev.apizana.tictactoe.models.User;
 import dev.apizana.tictactoe.security.TokenUtil;
-import dev.apizana.tictactoe.services.AuthService;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import dev.apizana.tictactoe.services.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.tags.Tags;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")
+@Tags(value = {
+        @Tag(name = "auth")
+})
 public class AuthController {
 
     @Autowired
@@ -30,14 +33,14 @@ public class AuthController {
     private TokenUtil jwtTokenUtil;
 
     @Autowired
-    private AuthService authService;
+    private UserService userService;
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthRequest authenticationRequest) throws Exception {
 
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
-        final UserDetails userDetails = authService
+        final UserDetails userDetails = userService
                 .loadUserByUsername(authenticationRequest.getUsername());
 
         final String token = jwtTokenUtil.generateToken(userDetails);
@@ -47,7 +50,7 @@ public class AuthController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<?> saveUser(@RequestBody UserDto user) throws Exception {
-        return ResponseEntity.ok(authService.save(user));
+        return ResponseEntity.ok(userService.save(user));
     }
 
     private void authenticate(String username, String password) throws Exception {
