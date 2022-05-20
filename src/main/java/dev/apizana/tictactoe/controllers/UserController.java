@@ -1,6 +1,7 @@
 package dev.apizana.tictactoe.controllers;
 
-import dev.apizana.tictactoe.models.User;
+import dev.apizana.tictactoe.domain.dtos.UserDto;
+import dev.apizana.tictactoe.domain.models.User;
 import dev.apizana.tictactoe.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -12,34 +13,45 @@ import io.swagger.v3.oas.annotations.tags.Tags;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
-import java.lang.annotation.Annotation;
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 //@Controller
 @RequestMapping("/users")
 @RestController
 @SecurityRequirement(name = "bearerAuth")
+@Tags(value = {
+        @Tag(name = "users")
+})
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @Tags(value = {
-            @Tag(name = "users")
+
+    @ApiResponses( value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "User Created",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "No users Found",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Not available",
+                    content = @Content
+            ),
+
     })
     @PostMapping
-    public ResponseEntity<User> create(@RequestBody @Valid User user){
+    public ResponseEntity<User> create(@RequestBody @Valid UserDto user){
         //if(user.getActive() == null)
         //    return new ResponseEntity(null,HttpStatus.BAD_REQUEST);
 
@@ -56,6 +68,11 @@ public class UserController {
                     responseCode = "200",
                     description = "Users found on the DB",
                     content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "No users Found",
+                    content = @Content
+            ),
             @ApiResponse(
                     responseCode = "404",
                     description = "Not available",
@@ -78,11 +95,6 @@ public class UserController {
         }
 
     }
-    /*@RequestMapping("/{id}")
-    public User getBbyId(@PathVariable("id") User user, Model model){
-
-    }*/
-
     @Tags(value = {
             @Tag(name = "users")
     })
@@ -95,16 +107,18 @@ public class UserController {
     @Tags(value = {
             @Tag(name = "users")
     })
-    @PatchMapping
-    public User update(){
-        return new User();
+    @PatchMapping("/{username}")
+    public ResponseEntity<UserDto> update(@PathVariable String username, @RequestBody UserDto user){
+        User authUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return new ResponseEntity<>(userService.update(username,user),HttpStatus.OK);
     }
     @Tags(value = {
             @Tag(name = "users")
     })
-    @DeleteMapping
-    public ResponseEntity<Boolean> delete(Long id){
+    @DeleteMapping("/{username}")
+    public ResponseEntity<Boolean> delete(@PathVariable String username){
 
-        return new ResponseEntity<>(userService.deleteById(id),HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(userService.deleteByUsername(username),HttpStatus.ACCEPTED);
     }
 }

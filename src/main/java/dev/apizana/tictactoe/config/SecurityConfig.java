@@ -1,12 +1,13 @@
 package dev.apizana.tictactoe.config;
 
-import dev.apizana.tictactoe.repositories.UserRepository;
 import dev.apizana.tictactoe.security.AuthEntryPoint;
 import dev.apizana.tictactoe.security.RequestFilter;
-import dev.apizana.tictactoe.services.AuthService;
+import dev.apizana.tictactoe.services.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -23,6 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
@@ -30,58 +32,75 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private AuthEntryPoint authEntryPoint;
 
     @Autowired
-
-    private AuthService authService;
+    private UserService userService;
 
     @Autowired
     private RequestFilter requestFilter;
 
     @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+
+
+
+/*
+    @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         // configure AuthenticationManager so that it knows from where to load
         // user for matching credentials
         // Use BCryptPasswordEncoder
-        auth.userDetailsService(authService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
     }
-
+*/
+    /*
     @Bean
     public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
+*/
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-/*
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception{
         //Configure AuthenticationManager so that it knows from where to load
         // user from matching credentials
         // User BCryptPasswordEncoder
-        auth.userDetailsService(authService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
     }
 
-
-*/
     @Override
     public void configure(WebSecurity web) {
+/*
         web.ignoring()
-                .antMatchers("/v3/api-docs/**", "/swagger-ui/**");
+                .antMatchers("/v3/api-docs/**",
+                        "/swagger-ui/**",
+                        "/swagger-ui/index.html",
+                        "/v3/api-docs/swagger-config"
+                        );*/
     }
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
 
+
+
         // Enable CORS and disable CSRF
         httpSecurity = httpSecurity.cors().and().csrf().disable();
-        httpSecurity
-                .cors().and().csrf().disable()
+        httpSecurity.cors().and().csrf().disable()
                 // dont authenticate this particular request
                 .authorizeRequests()
                 .antMatchers(
-                        "/authenticate",
-                        "/register").permitAll()
+                        "/auth/authenticate",
+                        "/auth/register",
+                        "/v3/api-docs/**",
+                        "/swagger-ui/**",
+                        "/swagger-ui/index.html",
+                        "/v3/api-docs/swagger-config").permitAll()
+                .antMatchers(HttpMethod.POST,"/users").permitAll().and()
+                .authorizeRequests()
                 // all other requests need to be authenticated
                 .anyRequest().authenticated().and().httpBasic().and()
                 // make sure we use stateless session; session won't be used to
