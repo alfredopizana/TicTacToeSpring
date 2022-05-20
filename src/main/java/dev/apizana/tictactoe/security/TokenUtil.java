@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import dev.apizana.tictactoe.domain.dtos.UserDto;
+import dev.apizana.tictactoe.domain.models.User;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -61,7 +63,8 @@ public class TokenUtil implements Serializable{
     //generate token for user
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-
+        //claims.put("email", userDetails.getEmail());
+        //claims.put("id", userDetails.getId());
         return doGenerateToken(claims, userDetails.getUsername());
     }
 

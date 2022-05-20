@@ -3,6 +3,7 @@ package dev.apizana.tictactoe.controllers;
 import dev.apizana.tictactoe.domain.dtos.AuthRequest;
 import dev.apizana.tictactoe.domain.dtos.AuthResponse;
 import dev.apizana.tictactoe.domain.dtos.UserDto;
+import dev.apizana.tictactoe.domain.models.User;
 import dev.apizana.tictactoe.security.TokenUtil;
 import dev.apizana.tictactoe.services.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
@@ -36,11 +39,11 @@ public class AuthController {
     private UserService userService;
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthRequest authenticationRequest) throws Exception {
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody @Valid AuthRequest authenticationRequest) throws Exception {
 
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
-        final UserDetails userDetails = userService
+        UserDetails userDetails = userService
                 .loadUserByUsername(authenticationRequest.getUsername());
 
         final String token = jwtTokenUtil.generateToken(userDetails);

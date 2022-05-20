@@ -1,4 +1,4 @@
-package dev.apizana.tictactoe.models;
+package dev.apizana.tictactoe.domain.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -34,6 +35,7 @@ public class User implements Serializable {
     @Column(unique = true)
     private String email;
 
+    @JsonIgnore
     @NotNull(message = "password is required")
     private String password;
 

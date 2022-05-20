@@ -1,4 +1,4 @@
-package dev.apizana.tictactoe.models;
+package dev.apizana.tictactoe.domain.models;
 
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
