@@ -52,17 +52,6 @@ public class UserService implements UserDetailsService{
         userFound.setPassword(bcryptEncoder.encode(user.getPassword()));
         return new UserDto();
     }
-
-    public Boolean deleteById(Long id) {
-        Optional<User> user = userRepository.findById(id);
-        if (user.isEmpty())
-            return false;
-
-        user.get().setActive(false);
-        user.get().setModifiedDate(Instant.now());
-        userRepository.save(user.get());
-        return true;
-    }
     public Boolean deleteByUsername(String username) {
         User user = validateAndGetLoggedUserByUsername(username);
         if (!user.getActive())
@@ -89,14 +78,5 @@ public class UserService implements UserDetailsService{
             throw new UsernameNotFoundException("User not found with username: " + username);
         return userFound.get();
     }
-    /*
-    public User save(UserDto user) {
-        User newUser = new User();
-        String userPassword = user.getPassword();
-        String userEmail = user.getUsername();
-        newUser.setUsername(userEmail);
-        newUser.setPassword(bcryptEncoder.encode(userPassword));
-        newUser.setEmail("testserver@email.com");
-        return userRepository.save(newUser);
-    }*/
+
 }
