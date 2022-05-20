@@ -50,7 +50,6 @@ public class TokenUtil implements Serializable{
     //for retrieveing any information from token we will need the secret key
     private Claims getAllClaimsFromToken(String token) {
         Key secretKey = Keys.hmacShaKeyFor(secret.getBytes());
-
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
     }
 
@@ -63,8 +62,6 @@ public class TokenUtil implements Serializable{
     //generate token for user
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        //claims.put("email", userDetails.getEmail());
-        //claims.put("id", userDetails.getId());
         return doGenerateToken(claims, userDetails.getUsername());
     }
 
@@ -76,7 +73,6 @@ public class TokenUtil implements Serializable{
     private String doGenerateToken(Map<String, Object> claims, String subject) {
         Key secretA = Keys.secretKeyFor(SignatureAlgorithm.HS512);
         Key secretKey = Keys.hmacShaKeyFor(secret.getBytes());
-        //byte[] secretBytes = DatatypeConverter.parseBase64Binary(base64Key);
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
