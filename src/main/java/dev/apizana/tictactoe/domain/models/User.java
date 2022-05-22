@@ -19,7 +19,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Entity(name = "user")
+@Entity(name = "users")
 @Data
 @Builder
 public class User implements Serializable {

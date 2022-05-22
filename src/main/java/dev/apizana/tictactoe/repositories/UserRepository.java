@@ -10,6 +10,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository
         extends JpaRepository<User, Long> {
+
     List<User> findAllByActiveTrue();
     Optional<User> findByEmailOrUsername(String email, String username);
 
