@@ -24,8 +24,8 @@ import io.jsonwebtoken.ExpiredJwtException;
 @Component
 public class RequestFilter extends OncePerRequestFilter {
 
-    @Value("${filters.patterns.allow}")
-    private String allowPatterns = "";
+    //@Value("${filters.patterns.allow}")
+    //private String allowPatterns = "";
 
     @Autowired
     private UserService userService;
