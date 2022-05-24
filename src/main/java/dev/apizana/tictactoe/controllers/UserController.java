@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -98,9 +99,9 @@ public class UserController {
     @Tags(value = {
             @Tag(name = "users")
     })
-    @GetMapping("/{id}")
-    public  ResponseEntity<User> getById(@PathVariable Long id){
-        return new ResponseEntity<>(userService.getById(id),HttpStatus.CREATED);
+    @GetMapping("/{username}")
+    public  ResponseEntity<User> getByUsername(@PathVariable String username){
+        return new ResponseEntity<>(userService.getByUsername(username),HttpStatus.CREATED);
     }
 
 
@@ -108,10 +109,11 @@ public class UserController {
             @Tag(name = "users")
     })
     @PatchMapping("/{username}")
-    public ResponseEntity<UserDto> update(@PathVariable String username, @RequestBody UserDto user){
+    public ResponseEntity<User> update(@PathVariable String username, @RequestBody UserDto user){
         User authUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        return new ResponseEntity<>(userService.update(username,user),HttpStatus.OK);
+        if(!authUser.getUsername().equals(username))
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<User>(userService.update(username,user),HttpStatus.OK);
     }
     @Tags(value = {
             @Tag(name = "users")
