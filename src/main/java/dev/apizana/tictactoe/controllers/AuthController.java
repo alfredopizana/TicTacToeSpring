@@ -39,7 +39,7 @@ public class AuthController {
     private UserService userService;
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody @Valid AuthRequest authenticationRequest) throws Exception {
+    public ResponseEntity<AuthResponse> createAuthenticationToken(@RequestBody @Valid AuthRequest authenticationRequest) throws Exception {
 
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
