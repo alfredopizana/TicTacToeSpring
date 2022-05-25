@@ -53,8 +53,8 @@ public class UserController {
     })
     @PostMapping
     public ResponseEntity<User> create(@RequestBody @Valid UserDto user){
-        //if(user.getActive() == null)
-        //    return new ResponseEntity(null,HttpStatus.BAD_REQUEST);
+        if(user.getUsername().isBlank())
+            return new ResponseEntity(null,HttpStatus.BAD_REQUEST);
 
         return new ResponseEntity<>(userService.create(user),HttpStatus.CREATED);
     }
