@@ -5,8 +5,11 @@ import dev.apizana.tictactoe.security.RequestFilter;
 import dev.apizana.tictactoe.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -24,6 +27,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+//@Profile(value = {"development", "production"})
+//@ComponentScan(basePackages = "dev.apizana.tictactoe")
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -38,7 +43,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private RequestFilter requestFilter;
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    @Qualifier("passwordEncoder")
+    private PasswordEncoder passwordEncoder;
 
 
 

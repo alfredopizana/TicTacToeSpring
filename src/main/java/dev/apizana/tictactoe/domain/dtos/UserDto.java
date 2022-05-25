@@ -15,13 +15,13 @@ import javax.validation.constraints.NotNull;
 public class UserDto {
 
     @Email(message = "Invalid email")
-    @NotNull(message = "Email is required")
+    //@Optionak(message = "Email is required")
     private String email;
 
-    @NotNull(message = "password is required")
+    //@NotNull(message = "password is required")
     private String password;
 
-    @NotNull(message = "username is required")
+    //@NotNull(message = "username is required")
     private String username;
 
 }

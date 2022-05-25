@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -52,8 +53,8 @@ public class UserController {
     })
     @PostMapping
     public ResponseEntity<User> create(@RequestBody @Valid UserDto user){
-        //if(user.getActive() == null)
-        //    return new ResponseEntity(null,HttpStatus.BAD_REQUEST);
+        if(user.getUsername() == null || user.getUsername().isBlank() )
+            return new ResponseEntity(null,HttpStatus.BAD_REQUEST);
 
         return new ResponseEntity<>(userService.create(user),HttpStatus.CREATED);
     }
@@ -81,26 +82,19 @@ public class UserController {
     })
     @GetMapping(value = "")
     public ResponseEntity<List<User>> getAll(){
-
-        try {
             List<User> users = new ArrayList<>();
             userService.getAllUsers().forEach(users::add);
             if (users.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                return new ResponseEntity<List<User>>(users,HttpStatus.NO_CONTENT);
             }
-            return new ResponseEntity<>(users, HttpStatus.OK);
-
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
+            return new ResponseEntity<List<User>>(users, HttpStatus.OK);
     }
     @Tags(value = {
             @Tag(name = "users")
     })
-    @GetMapping("/{id}")
-    public  ResponseEntity<User> getById(@PathVariable Long id){
-        return new ResponseEntity<>(userService.getById(id),HttpStatus.CREATED);
+    @GetMapping("/{username}")
+    public  ResponseEntity<User> getByUsername(@PathVariable String username){
+        return new ResponseEntity<>(userService.getByUsername(username),HttpStatus.CREATED);
     }
 
 
@@ -108,10 +102,11 @@ public class UserController {
             @Tag(name = "users")
     })
     @PatchMapping("/{username}")
-    public ResponseEntity<UserDto> update(@PathVariable String username, @RequestBody UserDto user){
+    public ResponseEntity<User> update(@PathVariable String username, @RequestBody UserDto user){
         User authUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        return new ResponseEntity<>(userService.update(username,user),HttpStatus.OK);
+        if(!authUser.getUsername().equals(username))
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<User>(userService.update(username,user),HttpStatus.OK);
     }
     @Tags(value = {
             @Tag(name = "users")
