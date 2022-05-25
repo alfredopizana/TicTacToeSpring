@@ -53,7 +53,7 @@ public class UserController {
     })
     @PostMapping
     public ResponseEntity<User> create(@RequestBody @Valid UserDto user){
-        if(user.getUsername().isBlank())
+        if(user.getUsername() == null || user.getUsername().isBlank() )
             return new ResponseEntity(null,HttpStatus.BAD_REQUEST);
 
         return new ResponseEntity<>(userService.create(user),HttpStatus.CREATED);
@@ -82,19 +82,12 @@ public class UserController {
     })
     @GetMapping(value = "")
     public ResponseEntity<List<User>> getAll(){
-
-        try {
             List<User> users = new ArrayList<>();
             userService.getAllUsers().forEach(users::add);
             if (users.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                return new ResponseEntity<List<User>>(users,HttpStatus.NO_CONTENT);
             }
-            return new ResponseEntity<>(users, HttpStatus.OK);
-
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
+            return new ResponseEntity<List<User>>(users, HttpStatus.OK);
     }
     @Tags(value = {
             @Tag(name = "users")
