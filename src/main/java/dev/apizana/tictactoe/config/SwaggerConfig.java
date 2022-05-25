@@ -28,7 +28,7 @@ public class SwaggerConfig {
 
 
     @Bean
-    public OpenAPI springShopOpenAPI() {
+    public OpenAPI springTictactoeOpenAPI() {
         return new OpenAPI()
 
                 .info(new Info().title("TicTacToe API")

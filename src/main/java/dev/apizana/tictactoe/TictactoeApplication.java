@@ -13,8 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 @OpenAPIDefinition
-//@EntityScan("com.apizana.tictactoe.models")
-//@EnableJpaRepositories("com.apizana.tictactoe.repositories.**.*")
 public class TictactoeApplication {
 
 	public static void main(String[] args) {
