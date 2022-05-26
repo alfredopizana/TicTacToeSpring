@@ -13,7 +13,6 @@ public interface UserRepository
 
     List<User> findAllByActiveTrue();
     Optional<User> findByEmailOrUsername(String email, String username);
-
     Optional<User> findByUsernameAndActiveTrue(String username);
 
 }
