@@ -24,15 +24,9 @@ public class Movement {
     @Column(unique = true, nullable = false)
     private Long id;
 
-    @ManyToOne(targetEntity = Game.class)
+    @ManyToOne(targetEntity = Game.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "game", foreignKey = @ForeignKey(name = "id"))
     private Game game;
-/*
-    @Id
-    @ManyToOne(targetEntity = Game.class)
-    @JoinColumn(name = "game", foreignKey = @ForeignKey(name = "id"))
-    private Game game;
-    */
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "ENUM('cross', 'circle')")
@@ -47,11 +41,4 @@ public class Movement {
     //@Size(min = 1, max = 9)
     @Column
     private Integer movementNumber;
-
-    @CreatedDate
-    private Instant createdDate;
-
-    @LastModifiedDate
-    private Instant modifiedDate;
-
 }

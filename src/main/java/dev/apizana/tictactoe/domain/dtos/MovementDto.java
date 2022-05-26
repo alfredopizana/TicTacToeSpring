@@ -22,6 +22,4 @@ public class MovementDto {
 
     private Integer position;
 
-    private Integer movementNumber;
-
 }

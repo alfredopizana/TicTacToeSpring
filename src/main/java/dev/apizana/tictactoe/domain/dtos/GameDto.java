@@ -21,5 +21,4 @@ public class GameDto {
 
     private GameStatus gameStatus;
 
-    private String winner;
 }
