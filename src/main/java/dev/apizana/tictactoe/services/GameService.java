@@ -69,7 +69,7 @@ public class GameService {
         game.getHistory().forEach(movement -> generatedBoard[movement.getPosition()] = movement.getSymbol());
 
         //check for winner
-        if(Minimax.checkForWinner(generatedBoard,movementDto.getSymbol()) != null) {
+        if(Minimax.checkForWinner(generatedBoard,movementDto.getSymbol()).length > 0) {
             game.setWinner(movementDto.getSymbol().toString());
             game.setGameStatus(GameStatus.completed);
         }
