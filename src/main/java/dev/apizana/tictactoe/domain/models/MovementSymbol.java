@@ -1,5 +1,5 @@
 package dev.apizana.tictactoe.domain.models;
 
 public enum MovementSymbol {
-    cross, circle
+    cross, circle, none
 }
