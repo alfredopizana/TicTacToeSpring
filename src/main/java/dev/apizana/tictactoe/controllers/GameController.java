@@ -55,7 +55,10 @@ public class GameController {
     ResponseEntity<Game> createMovement(@PathVariable Long gameId, @RequestBody MovementDto movementDto){
         return new ResponseEntity<>(gameService.generateMovement(gameId,movementDto),HttpStatus.OK);
     }
-
+    @PostMapping(value = "/movements/{gameId}/generatePair")
+    ResponseEntity<Game> createPairOfMovements(@PathVariable Long gameId, @RequestBody MovementDto movementDto){
+        return new ResponseEntity<>(gameService.generatePairOfMovements(gameId,movementDto),HttpStatus.OK);
+    }
 
 
 }

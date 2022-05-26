@@ -41,19 +41,15 @@ public class Game {
     private GameStatus gameStatus = GameStatus.notstarted;
 
     @Column
-    private String winner;
+    private String winner = "";
 
     private String creator;
 
     //@ManyToOne(targetEntity = User.class)
     //private User creator;
 
-    /*
-    @ManyToOne(targetEntity = User.class)
-    private Long creator;*/
-
-    @CreatedBy
-    private Long createdBy;
+    //@CreatedBy
+    //private Long createdBy;
 
 
     @CreatedDate
