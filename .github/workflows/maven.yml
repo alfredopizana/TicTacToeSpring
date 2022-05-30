@@ -19,20 +19,6 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
-    - name: Write Properties
-      uses: christian-draeger/write-properties@1.1.0
-      with:
-        path: './src/main/resources/application.properties'
-        property: |
-          'spring.datasource.url'
-          'spring.datasource.username'
-          'spring.datasource.password'
-          'jwt.secret'
-        value: |
-          '${{secrets.DB_URL_PROD}}'
-          '${{secrets.DB_USERRNAME_PROD}}'
-          '${{secrets.DB_PASSWORD_PROD}}'
-          '${{secrets.JWT_SECRET_PROD}}'
     - name: Set selected color
       run: cat './src/main/resources/application.properties'
     - name: Build with Maven
