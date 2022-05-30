@@ -94,7 +94,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
         // Enable CORS and disable CSRF
-        httpSecurity = httpSecurity.cors().and().csrf().disable();
+        //httpSecurity = httpSecurity.cors().and().csrf().disable();
         httpSecurity.cors().and().csrf().disable()
                 // dont authenticate this particular request
                 .authorizeRequests()
