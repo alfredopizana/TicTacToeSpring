@@ -4,6 +4,7 @@ import dev.apizana.tictactoe.domain.dtos.MovementDto;
 import dev.apizana.tictactoe.domain.models.MovementSymbol;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Minimax {
 
@@ -81,6 +82,19 @@ public class Minimax {
             return new int[]{2,4,6};
         //Check Cross
         return new int[]{};
+    }
+
+    public Minimax(MovementSymbol[] currentBoard,Boolean isMax, int depth){
+        int numberOfEmptySpaces = (int) Arrays.stream(currentBoard).filter(movementPosition -> movementPosition == MovementSymbol.none).count();
+        for (int boardPosition = 0; boardPosition < currentBoard.length ; boardPosition++){
+            if(currentBoard[boardPosition] == MovementSymbol.none){
+                if(isMax){
+                    //call next best move with isMax inverted
+                }else{
+
+                }
+            }
+        }
     }
 
     public String bestMove(){
